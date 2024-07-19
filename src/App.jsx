@@ -1,4 +1,4 @@
-import { MusicIcon, PauseCircle, PlayCircle } from "lucide-react";
+import { MusicIcon, PauseCircle, Timer } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 function updateTime() {
@@ -42,7 +42,7 @@ export default function App() {
 	return (
 		<section className="relative w-full h-screen">
 			<img
-				src="../src/assets/bg1.jpg"
+				src="../src/assets/bg2.jpg"
 				className="z-0 fixed w-full h-screen object-cover"
 			/>
 			<div className="relative flex items-center justify-center w-full h-full z-10">
@@ -65,9 +65,9 @@ export default function App() {
 							/>
 						)}
 
-						<PlayCircle className="hover:text-slate-400 cursor-pointer" />
+						<Timer className="hover:text-slate-400 cursor-pointer" />
 						<div>
-							Pomodoro <span className="text-green-300">Active</span>
+							Pomodoro <span className="text-green-300 bg-white rounded-2xl px-2 py-2">Active</span>
 						</div>
 					</div>
 				</div>
