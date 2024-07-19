@@ -42,7 +42,7 @@ export default function App() {
 	return (
 		<section className="relative w-full h-screen">
 			<img
-				src="../src/assets/bg2.jpg"
+				src="../public/assets/bg2.jpg"
 				className="z-0 fixed w-full h-screen object-cover"
 			/>
 			<div className="relative flex items-center justify-center w-full h-full z-10">
@@ -72,7 +72,7 @@ export default function App() {
 					</div>
 				</div>
 			</div>
-			<audio src="../src/assets/bgm1.mp3" ref={audioRef} />
+			<audio src="../public/assets/bgm1.mp3" ref={audioRef} />
 		</section>
 	);
 }
