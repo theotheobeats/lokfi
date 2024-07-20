@@ -1,32 +1,17 @@
-import { MusicIcon, PauseCircle, Timer } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-
-function updateTime() {
-	const now = new Date();
-	const hours = String(now.getHours()).padStart(2, 0);
-	const minute = String(now.getMinutes()).padStart(2, 0);
-	const second = String(now.getSeconds()).padStart(2, 0);
-
-	const currentTime = `${hours}:${minute}:${second}`;
-
-	return currentTime;
-}
+import { CloudSunRain, MusicIcon, PauseCircle, Sun, Timer } from "lucide-react";
+import { useRef, useState } from "react";
+import Clock from "./components/Clock";
 
 export default function App() {
-	const [time, setTime] = useState(updateTime);
 	const audioRef = useRef(null);
+	const rainRef = useRef(null);
 	const [isPlay, setIsPlay] = useState(false);
-
-	useEffect(() => {
-		const intervalId = setInterval(() => {
-			setTime(updateTime());
-		}, 1000);
-
-		return () => clearInterval(intervalId);
-	}, []);
+	const [isRain, setIsRain] = useState(false);
+	const [isPomodoroActive, setIsPomodoroActive] = useState(false);
 
 	const playAudio = () => {
 		if (audioRef.current) {
+			audioRef.current.volume = 0.5;
 			audioRef.current.play();
 			setIsPlay(true);
 		}
@@ -39,19 +24,38 @@ export default function App() {
 		}
 	};
 
+	const playRain = () => {
+		if (rainRef.current) {
+			rainRef.current.volume = 0.2;
+			rainRef.current.play();
+			setIsRain(true);
+		}
+	};
+
+	const pauseRain = () => {
+		if (rainRef.current) {
+			rainRef.current.play();
+			setIsRain(false);
+		}
+	};
+
+	const togglePomodoro = () => {
+		if (isPomodoroActive) {
+			setIsPomodoroActive(false);
+		} else {
+			setIsPomodoroActive(true);
+		}
+	};
+
 	return (
 		<section className="relative w-full h-screen">
 			<img
-				src="/assets/bg2.jpg"
+				src="/assets/bg1.jpg"
 				className="z-0 fixed w-full h-screen object-cover"
 			/>
 			<div className="relative flex items-center justify-center w-full h-full z-10">
 				<div className="flex-col">
-					<div className="backdrop-blur-xl bg-white/5 flex p-4 rounded-2xl shadow-xl">
-						<div className="text-[4rem] font-bold text-white pr-8 pl-6 pb-2">
-							{time}
-						</div>
-					</div>
+					<Clock />
 					<div className="flex items-center justify-center m-4 text-white gap-4">
 						{isPlay ? (
 							<PauseCircle
@@ -65,14 +69,39 @@ export default function App() {
 							/>
 						)}
 
-						<Timer className="hover:text-slate-400 cursor-pointer" />
+						{isRain ? (
+							<CloudSunRain
+								className="hover:text-slate-400 cursor-pointer"
+								onClick={pauseRain}
+							/>
+						) : (
+							<Sun
+								className="hover:text-slate-400 cursor-pointer"
+								onClick={playRain}
+							/>
+						)}
+
+						<Timer
+							className="hover:text-slate-400 cursor-pointer"
+							onClick={togglePomodoro}
+						/>
 						<div>
-							Pomodoro <span className="text-green-300 bg-white rounded-2xl px-2 py-2">Active</span>
+							Pomodoro{" "}
+							{isPomodoroActive ? (
+								<span className="text-green-300 bg-white rounded-2xl px-2 py-2">
+									Active
+								</span>
+							) : (
+								<span className="text-slate-300 bg-white rounded-2xl px-2 py-2">
+									Inactive
+								</span>
+							)}
 						</div>
 					</div>
 				</div>
 			</div>
-			<audio src="/assets/bgm1.mp3" ref={audioRef} />
+			<audio src="/assets/bgm1.mp3" ref={audioRef} loop />
+			<audio src="/assets/rain.mp3" ref={rainRef} loop />
 		</section>
 	);
 }
